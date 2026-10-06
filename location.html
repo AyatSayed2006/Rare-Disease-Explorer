@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find specialist doctors and medical centers near you for rare disease care.">
+    <title>Location & Doctor Finder | Rare Disease Explorer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ================= HEADER ================= -->
+    <header class="header" id="header">
+        <div class="header__inner">
+            <a href="index.html" class="header__brand" aria-label="Rare Disease Explorer Home">
+                <span class="header__brand-icon">
+                    <svg class="header__brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                        <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                        <path d="M9 12H4s.5-1.5 2-2 3 .5 3 2z"/>
+                        <path d="M15 13v5s1.5-.5 2-2-.5-3-2-3z"/>
+                    </svg>
+                </span>
+                <span class="header__brand-title" data-i18n="brandName">Rare Disease Explorer</span>
+            </a>
+
+            <nav class="header__nav" id="mainNav" aria-label="Main Navigation">
+                <ul class="header__nav-list">
+                    <li class="header__nav-item"><a href="index.html" class="header__nav-link" data-nav="home">Home</a></li>
+                    <li class="header__nav-item"><a href="diseases-comparison.html" class="header__nav-link" data-nav="comparison">Diseases Comparison</a></li>
+                    <li class="header__nav-item"><a href="disease.html" class="header__nav-link" data-nav="journey">Disease Journey</a></li>
+                    <li class="header__nav-item"><a href="location.html" class="header__nav-link header__nav-link--active" data-nav="location">Location</a></li>
+                </ul>
+            </nav>
+
+            <div class="header__actions">
+                <button type="button" class="header__lang-btn" id="langBtn" aria-label="Change language">
+                    <span class="header__lang-text" id="langBtnText">العربية</span>
+                </button>
+                <button type="button" class="header__mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-drawer" id="mobileMenu" aria-hidden="true">
+            <ul class="mobile-drawer__list">
+                <li><a href="index.html" class="mobile-drawer__link" data-nav="home">Home</a></li>
+                <li><a href="diseases-comparison.html" class="mobile-drawer__link" data-nav="comparison">Diseases Comparison</a></li>
+                <li><a href="disease.html" class="mobile-drawer__link" data-nav="journey">Disease Journey</a></li>
+                <li><a href="location.html" class="mobile-drawer__link mobile-drawer__link--active" data-nav="location">Location</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main id="mainContent">
+        <!-- ================= HERO ================= -->
+        <section class="compare-hero loc-hero">
+            <div class="compare-hero__inner">
+                <div class="compare-hero__top">
+                    <div class="compare-hero__content">
+                        <div class="compare-hero__badge">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span data-i18n="locBadge">Care Near You</span>
+                        </div>
+                        <h1 class="compare-hero__title" data-i18n="locTitle">Find Specialist Doctors & Medical Centers Near You</h1>
+                        <p class="compare-hero__desc" data-i18n="locDesc">
+                            Set your location, choose the body system involved, and see the nearest hospitals, clinics and doctors on the map.
+                        </p>
+                    </div>
+
+                    <div class="compare-hero__visual" aria-hidden="true">
+                        <div class="compare-visual">
+                            <div class="compare-visual__ring">
+                                <div class="compare-visual__center"><i class="fa-solid fa-location-dot"></i></div>
+                            </div>
+                            <span class="compare-visual__node compare-visual__node--rare"><i class="fa-solid fa-user-doctor"></i></span>
+                            <span class="compare-visual__node compare-visual__node--mimic"><i class="fa-solid fa-hospital"></i></span>
+                            <span class="compare-visual__node compare-visual__node--clue"><i class="fa-solid fa-route"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FINDER ================= -->
+        <section class="compare-section loc-section">
+            <div class="compare-section__container">
+                <div class="loc-grid">
+
+                    <!-- Controls -->
+                    <div class="loc-panel">
+                        <!-- Step 1 -->
+                        <div class="loc-step">
+                            <h2 class="loc-step__title">
+                                <span class="loc-step__num">1</span>
+                                <span data-i18n="step1Title">Set your location</span>
+                            </h2>
+
+                            <button type="button" class="loc-btn loc-btn--primary" id="getLocationBtn">
+                                <i class="fa-solid fa-crosshairs" aria-hidden="true"></i>
+                                <span data-i18n="useMyLocation">Use my current location</span>
+                            </button>
+
+                            <div class="loc-or"><span data-i18n="orTypeArea">or type a city / area</span></div>
+
+                            <form class="loc-area" id="areaForm" autocomplete="off">
+                                <input type="text" id="areaInput" class="loc-area__input" placeholder="e.g. Alexandria">
+                                <button type="submit" class="loc-area__btn" id="areaBtn" aria-label="Search area">
+                                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                                </button>
+                            </form>
+
+                            <div class="loc-status" id="locationStatus" role="status" aria-live="polite"></div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="loc-step">
+                            <h2 class="loc-step__title">
+                                <span class="loc-step__num">2</span>
+                                <span data-i18n="step2Title">Choose the body system</span>
+                            </h2>
+
+                            <div class="loc-cat-grid" id="catGrid">
+                                <button type="button" class="loc-cat" data-cat="neurological" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-brain"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_neurological">Neurological</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="genetic-metabolic" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-dna"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_genetic-metabolic">Genetic & Metabolic</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="respiratory" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-lungs"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_respiratory">Respiratory</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="musculoskeletal" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-bone"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_musculoskeletal">Musculoskeletal</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="blood-disorders" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-droplet"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_blood-disorders">Blood Disorders</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="vision-hearing" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-eye"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_vision-hearing">Vision & Hearing</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="genetic-syndromes" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-child"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_genetic-syndromes">Genetic Syndromes</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="skin-disorders" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-hand-dots"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_skin-disorders">Skin Disorders</span>
+                                </button>
+                                <button type="button" class="loc-cat" data-cat="digestive-kidney" aria-pressed="false">
+                                    <span class="loc-cat__icon"><i class="fa-solid fa-utensils"></i></span>
+                                    <span class="loc-cat__label" data-i18n="cat_digestive-kidney">Digestive & Kidney</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="loc-step">
+                            <h2 class="loc-step__title">
+                                <span class="loc-step__num">3</span>
+                                <span data-i18n="step3Title">Find care</span>
+                            </h2>
+
+                            <label class="loc-radius" for="radiusSelect">
+                                <span data-i18n="radiusLabel">Search distance</span>
+                                <select id="radiusSelect" class="loc-radius__select">
+                                    <option value="3">3 km</option>
+                                    <option value="5" selected>5 km</option>
+                                    <option value="10">10 km</option>
+                                    <option value="20">20 km</option>
+                                </select>
+                            </label>
+
+                            <button type="button" class="loc-btn loc-btn--primary" id="findBtn" disabled>
+                                <i class="fa-solid fa-user-doctor" aria-hidden="true"></i>
+                                <span data-i18n="btnFind">Find nearby doctors</span>
+                            </button>
+                            <button type="button" class="loc-btn loc-btn--outline" id="mapsBtn" disabled>
+                                <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                                <span data-i18n="btnMaps">Search on Google Maps</span>
+                            </button>
+                            <button type="button" class="loc-btn loc-btn--dark" id="earthBtn" disabled>
+                                <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                                <span data-i18n="btnEarth">Explore in Google Earth</span>
+                            </button>
+
+                            <p class="loc-hint" id="readyHint" data-i18n="hintSelect">Set your location and choose a body system to enable these buttons.</p>
+                        </div>
+                    </div>
+
+                    <!-- Map & results -->
+                    <div class="loc-panel">
+                        <h2 class="loc-panel__title">
+                            <i class="fa-solid fa-map" aria-hidden="true"></i>
+                            <span data-i18n="mapTitle">Map & nearby care</span>
+                        </h2>
+
+                        <div id="map" class="loc-map"></div>
+
+                        <div class="loc-results" id="resultsContainer" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <div class="compare-note-box">
+                    <div class="compare-note-box__icon"><i class="fa-solid fa-circle-info"></i></div>
+                    <div class="compare-note-box__content">
+                        <h3 class="compare-note-box__title" data-i18n="noteTitle">🔎 Important Note</h3>
+                        <p class="compare-note-box__desc" data-i18n="noteDesc"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+    (function () {
+        "use strict";
+
+        /* ---------------------------------------------------------
+           SPECIALTIES (mapped to the project's categories)
+           keys   -> words searched in OSM name / speciality tags
+           qEn/qAr-> text sent to Google Maps / Google Earth
+        --------------------------------------------------------- */
+        const categories = {
+            "neurological":      { qEn: "neurologist",                        qAr: "طبيب مخ واعصاب",       keys: ["neurolog", "neuro", "مخ", "اعصاب", "أعصاب"] },
+            "genetic-metabolic": { qEn: "medical genetics metabolic clinic",  qAr: "طبيب وراثة وامراض ايض", keys: ["genetic", "metabol", "endocrin", "وراثة", "وراثي", "غدد"] },
+            "respiratory":       { qEn: "pulmonologist chest doctor",         qAr: "دكتور صدر",             keys: ["pulmon", "chest", "respir", "صدر", "رئة", "رئوي"] },
+            "musculoskeletal":   { qEn: "orthopedic doctor",                  qAr: "دكتور عظام",            keys: ["orthop", "rheumat", "bone", "عظام", "روماتيزم"] },
+            "blood-disorders":   { qEn: "hematologist",                       qAr: "دكتور امراض دم",        keys: ["hemat", "haemat", "blood", "الدم"] },
+            "vision-hearing":    { qEn: "ophthalmologist ENT audiology",      qAr: "دكتور عيون وانف واذن",  keys: ["ophthalm", "eye", "otolaryng", "audiolog", "عيون", "عين", "انف", "أنف", "اذن", "أذن", "سمع"] },
+            "genetic-syndromes": { qEn: "clinical geneticist pediatrician",   qAr: "طبيب وراثة اطفال",      keys: ["genetic", "pediatr", "paediatr", "وراثة", "وراثي", "اطفال", "أطفال"] },
+            "skin-disorders":    { qEn: "dermatologist",                      qAr: "دكتور جلدية",           keys: ["dermat", "skin", "جلد"] },
+            "digestive-kidney":  { qEn: "gastroenterologist nephrologist",    qAr: "دكتور جهاز هضمي وكلى",  keys: ["gastro", "hepat", "liver", "nephro", "kidney", "internal", "هضم", "كبد", "كلى", "باطنة"] }
+        };
+
+        // Disease -> category (used when arriving with ?disease=)
+        const diseaseToCategory = {
+            rett: "neurological", huntington: "neurological", wilson: "digestive-kidney",
+            gaucher: "genetic-metabolic", cysticfibrosis: "respiratory", fop: "musculoskeletal",
+            eds: "musculoskeletal", sicklecell: "blood-disorders", pnh: "blood-disorders",
+            usher: "vision-hearing", angelman: "genetic-syndromes", eb: "skin-disorders"
+        };
+
+        /* ---------------------------------------------------------
+           TRANSLATIONS
+        --------------------------------------------------------- */
+        let currentLang = localStorage.getItem("rde-language") || "en";
+
+        const dict = {
+            en: {
+                brandName: "Rare Disease Explorer",
+                pageTitle: "Location & Doctor Finder | Rare Disease Explorer",
+                langBtnText: "العربية",
+                navHome: "Home", navComparison: "Diseases Comparison", navJourney: "Disease Journey",
+                navLocation: "Location",
+
+                locBadge: "Care Near You",
+                locTitle: "Find Specialist Doctors & Medical Centers Near You",
+                locDesc: "Set your location, choose the body system involved, and see the nearest hospitals, clinics and doctors on the map.",
+
+                step1Title: "Set your location",
+                useMyLocation: "Use my current location",
+                orTypeArea: "or type a city / area",
+                areaPlaceholder: "e.g. Alexandria",
+                statusIdle: "Location not set yet",
+                statusLocating: "Getting your location...",
+                statusOk: "Location set ({lat}, {lng})",
+                statusPlace: "Location set: {name}",
+                statusSearching: "Searching for the area...",
+                errDenied: "Location permission was denied. Allow it in your browser, or type your area above.",
+                errUnavailable: "Could not determine your location. Try again or type your area above.",
+                errTimeout: "Getting your location took too long. Try again or type your area above.",
+                errInsecure: "Location only works on HTTPS or localhost. Open the site through a local server, or type your area above.",
+                errUnsupported: "Your browser does not support location. Type your area above.",
+                errPlaceNotFound: "Area not found. Try another name.",
+                errPlaceNetwork: "Could not search for the area. Check your connection.",
+                errEmptyArea: "Type a city or area first.",
+
+                step2Title: "Choose the body system",
+                cat_neurological: "Neurological",
+                "cat_genetic-metabolic": "Genetic & Metabolic",
+                cat_respiratory: "Respiratory",
+                cat_musculoskeletal: "Musculoskeletal",
+                "cat_blood-disorders": "Blood Disorders",
+                "cat_vision-hearing": "Vision & Hearing",
+                "cat_genetic-syndromes": "Genetic Syndromes",
+                "cat_skin-disorders": "Skin Disorders",
+                "cat_digestive-kidney": "Digestive & Kidney",
+
+                step3Title: "Find care",
+                radiusLabel: "Search distance",
+                btnFind: "Find nearby doctors",
+                btnMaps: "Search on Google Maps",
+                btnEarth: "Explore in Google Earth",
+                hintSelect: "Set your location and choose a body system to enable these buttons.",
+                hintReady: "Ready. Results come from OpenStreetMap; Google Maps / Earth open in a new tab.",
+
+                mapTitle: "Map & nearby care",
+                finding: "Looking for medical facilities nearby...",
+                noResults: "No medical facilities were found within {r} km. Try a larger distance or Google Maps.",
+                errNetwork: "Could not load nearby places right now. Please try again, or use Google Maps.",
+                resultsCount: "{n} places within {r} km",
+                matchBadge: "Specialty match",
+                typeHospital: "Hospital", typeClinic: "Clinic", typeDoctor: "Doctor", typeFacility: "Medical facility",
+                unnamed: "Unnamed facility",
+                directions: "Directions",
+                callNow: "Call",
+                kmAway: "{d} km away",
+                youAreHere: "You are here",
+                dataNote: "Places come from OpenStreetMap and may be incomplete. Please call before visiting.",
+
+                noteTitle: "🔎 Important Note",
+                noteDesc: "This tool helps you find healthcare providers near you. It does not recommend a specific doctor or give a diagnosis. Rare diseases are best evaluated by specialist centers, so ask your doctor for a referral."
+            },
+            ar: {
+                brandName: "مستكشف الأمراض النادرة",
+                pageTitle: "الموقع وأقرب الأطباء | مستكشف الأمراض النادرة",
+                langBtnText: "English",
+                navHome: "الرئيسية", navComparison: "مقارنة الأمراض", navJourney: "رحلة المرض",
+                navLocation: "الموقع ",
+
+                locBadge: "الرعاية القريبة منك",
+                locTitle: "ابحث عن أقرب الأطباء والمراكز الطبية المتخصصة",
+                locDesc: "حدد موقعك، واختر الجهاز المتأثر في الجسم، وشاهد أقرب المستشفيات والعيادات والأطباء على الخريطة.",
+
+                step1Title: "حدد موقعك",
+                useMyLocation: "استخدم موقعي الحالي",
+                orTypeArea: "أو اكتب اسم المدينة / المنطقة",
+                areaPlaceholder: "مثال: الإسكندرية",
+                statusIdle: "لم يتم تحديد الموقع بعد",
+                statusLocating: "جاري جلب موقعك...",
+                statusOk: "تم تحديد الموقع ({lat}, {lng})",
+                statusPlace: "تم تحديد الموقع: {name}",
+                statusSearching: "جاري البحث عن المنطقة...",
+                errDenied: "تم رفض إذن الموقع. فعّله من المتصفح، أو اكتب منطقتك بالأعلى.",
+                errUnavailable: "تعذر تحديد موقعك. حاول مرة أخرى أو اكتب منطقتك بالأعلى.",
+                errTimeout: "استغرق تحديد الموقع وقتًا طويلًا. حاول مرة أخرى أو اكتب منطقتك بالأعلى.",
+                errInsecure: "تحديد الموقع يعمل فقط على HTTPS أو localhost. افتح الموقع عبر سيرفر محلي، أو اكتب منطقتك بالأعلى.",
+                errUnsupported: "متصفحك لا يدعم تحديد الموقع. اكتب منطقتك بالأعلى.",
+                errPlaceNotFound: "لم يتم العثور على المنطقة. جرّب اسمًا آخر.",
+                errPlaceNetwork: "تعذر البحث عن المنطقة. تأكد من اتصالك بالإنترنت.",
+                errEmptyArea: "اكتب اسم مدينة أو منطقة أولًا.",
+
+                step2Title: "اختر الجهاز المتأثر",
+                cat_neurological: "الجهاز العصبي",
+                "cat_genetic-metabolic": "الأمراض الجينية والاستقلابية",
+                cat_respiratory: "الجهاز التنفسي",
+                cat_musculoskeletal: "الجهاز العضلي الهيكلي",
+                "cat_blood-disorders": "اضطرابات الدم",
+                "cat_vision-hearing": "البصر والسمع",
+                "cat_genetic-syndromes": "المتلازمات الوراثية",
+                "cat_skin-disorders": "الأمراض الجلدية",
+                "cat_digestive-kidney": "الجهاز الهضمي والكلى",
+
+                step3Title: "ابحث عن الرعاية",
+                radiusLabel: "مسافة البحث",
+                btnFind: "ابحث عن أطباء قريبين",
+                btnMaps: "ابحث في خرائط جوجل",
+                btnEarth: "استكشف في جوجل إيرث",
+                hintSelect: "حدد موقعك واختر الجهاز المتأثر لتفعيل هذه الأزرار.",
+                hintReady: "جاهز. النتائج من OpenStreetMap، وخرائط جوجل / إيرث تُفتح في تبويب جديد.",
+
+                mapTitle: "الخريطة والرعاية القريبة",
+                finding: "جاري البحث عن منشآت طبية قريبة...",
+                noResults: "لم يتم العثور على منشآت طبية خلال {r} كم. جرّب مسافة أكبر أو خرائط جوجل.",
+                errNetwork: "تعذر تحميل الأماكن القريبة الآن. حاول مرة أخرى، أو استخدم خرائط جوجل.",
+                resultsCount: "{n} مكان خلال {r} كم",
+                matchBadge: "يطابق التخصص",
+                typeHospital: "مستشفى", typeClinic: "عيادة", typeDoctor: "طبيب", typeFacility: "منشأة طبية",
+                unnamed: "منشأة بدون اسم",
+                directions: "الاتجاهات",
+                callNow: "اتصال",
+                kmAway: "على بعد {d} كم",
+                youAreHere: "أنت هنا",
+                dataNote: "الأماكن مصدرها OpenStreetMap وقد تكون غير كاملة. يُفضل الاتصال قبل الذهاب.",
+
+                noteTitle: "🔎 ملاحظة مهمة",
+                noteDesc: "تساعدك هذه الأداة في العثور على مقدمي الرعاية الصحية القريبين منك، ولا ترشح طبيبًا بعينه ولا تقدم تشخيصًا. الأمراض النادرة يُفضل أن تُقيَّم في مراكز متخصصة، لذلك اطلب من طبيبك تحويلًا."
+            }
+        };
+
+        function tr(key, vars) {
+            let s = (dict[currentLang] && dict[currentLang][key]) || dict.en[key] || key;
+            if (vars) Object.keys(vars).forEach(function (k) { s = s.replace("{" + k + "}", vars[k]); });
+            return s;
+        }
+
+        function esc(str) {
+            return String(str == null ? "" : str).replace(/[&<>"']/g, function (c) {
+                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+            });
+        }
+
+        /* ---------------------------------------------------------
+           STATE & DOM
+        --------------------------------------------------------- */
+        let userLat = null, userLng = null;
+        let selectedCat = null;
+        let statusState = { type: "idle", key: "statusIdle", vars: null };
+        let lastSearch = null;          // { cat, radius, items }
+        let searching = false;
+
+        const $ = function (id) { return document.getElementById(id); };
+        const statusEl = $("locationStatus");
+        const findBtn = $("findBtn");
+        const mapsBtn = $("mapsBtn");
+        const earthBtn = $("earthBtn");
+        const readyHint = $("readyHint");
+        const radiusSelect = $("radiusSelect");
+        const areaInput = $("areaInput");
+        const resultsEl = $("resultsContainer");
+        const catButtons = document.querySelectorAll(".loc-cat");
+
+        /* ---------------------------------------------------------
+           MAP
+        --------------------------------------------------------- */
+        let map, userMarker, radiusCircle, markersLayer;
+        const markerById = {};
+
+        function initMap() {
+            map = L.map("map", { scrollWheelZoom: true }).setView([30.0444, 31.2357], 10);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: "© OpenStreetMap"
+            }).addTo(map);
+            markersLayer = L.layerGroup().addTo(map);
+            setTimeout(function () { map.invalidateSize(); }, 200);
+        }
+
+        function pinIcon(iconClass, extraClass) {
+            return L.divIcon({
+                className: "loc-pin " + (extraClass || ""),
+                html: '<i class="fa-solid ' + iconClass + '"></i>',
+                iconSize: [34, 34],
+                iconAnchor: [17, 17],
+                popupAnchor: [0, -16]
+            });
+        }
+
+        function placeUserMarker() {
+            if (userMarker) map.removeLayer(userMarker);
+            userMarker = L.marker([userLat, userLng], { icon: pinIcon("fa-user", "loc-pin--me") }).addTo(map);
+            userMarker.bindPopup('<div dir="auto"><b>' + esc(tr("youAreHere")) + "</b></div>");
+            drawRadius();
+        }
+
+        function drawRadius() {
+            if (radiusCircle) { map.removeLayer(radiusCircle); radiusCircle = null; }
+            if (userLat == null) return;
+            radiusCircle = L.circle([userLat, userLng], {
+                radius: Number(radiusSelect.value) * 1000,
+                color: "#216f74", weight: 1.5, fillColor: "#216f74", fillOpacity: 0.05
+            }).addTo(map);
+        }
+
+        /* ---------------------------------------------------------
+           STATUS
+        --------------------------------------------------------- */
+        function setStatus(type, key, vars) {
+            statusState = { type: type, key: key, vars: vars || null };
+            renderStatus();
+        }
+
+        function renderStatus() {
+            const icons = {
+                idle: "fa-circle-info", loading: "fa-spinner fa-spin",
+                ok: "fa-circle-check", error: "fa-triangle-exclamation"
+            };
+            statusEl.className = "loc-status" + (statusState.type === "ok" ? " is-ok" : "") + (statusState.type === "error" ? " is-error" : "");
+            statusEl.innerHTML = '<i class="fa-solid ' + icons[statusState.type] + '" aria-hidden="true"></i><span>' +
+                esc(tr(statusState.key, statusState.vars)) + "</span>";
+        }
+
+        /* ---------------------------------------------------------
+           READY STATE
+        --------------------------------------------------------- */
+        function isReady() { return userLat != null && userLng != null && !!selectedCat; }
+
+        function checkReady() {
+            const ready = isReady();
+            findBtn.disabled = !ready || searching;
+            mapsBtn.disabled = !ready;
+            earthBtn.disabled = !ready;
+            readyHint.textContent = tr(ready ? "hintReady" : "hintSelect");
+        }
+
+        function setLocation(lat, lng, zoom) {
+            userLat = lat;
+            userLng = lng;
+            map.setView([lat, lng], zoom || 13);
+            placeUserMarker();
+            // Location changed: old results no longer match
+            lastSearch = null;
+            markersLayer.clearLayers();
+            resultsEl.innerHTML = "";
+            checkReady();
+        }
+
+        /* ---------------------------------------------------------
+           GEOLOCATION
+        --------------------------------------------------------- */
+        $("getLocationBtn").addEventListener("click", function () {
+            if (!navigator.geolocation) { setStatus("error", "errUnsupported"); return; }
+            if (window.isSecureContext === false) { setStatus("error", "errInsecure"); return; }
+
+            setStatus("loading", "statusLocating");
+
+            navigator.geolocation.getCurrentPosition(
+                function (pos) {
+                    const lat = pos.coords.latitude, lng = pos.coords.longitude;
+                    setLocation(lat, lng, 14);
+                    setStatus("ok", "statusOk", { lat: lat.toFixed(3), lng: lng.toFixed(3) });
+                },
+                function (err) {
+                    if (err.code === 1) setStatus("error", "errDenied");
+                    else if (err.code === 3) setStatus("error", "errTimeout");
+                    else setStatus("error", "errUnavailable");
+                },
+                { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+            );
+        });
+
+        /* ---------------------------------------------------------
+           TYPE AN AREA (Nominatim geocoding)
+        --------------------------------------------------------- */
+        $("areaForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const q = areaInput.value.trim();
+            if (!q) { setStatus("error", "errEmptyArea"); return; }
+
+            setStatus("loading", "statusSearching");
+
+            const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=" +
+                currentLang + "&q=" + encodeURIComponent(q);
+
+            fetch(url, { headers: { "Accept": "application/json" } })
+                .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
+                .then(function (data) {
+                    if (!data || !data.length) { setStatus("error", "errPlaceNotFound"); return; }
+                    const p = data[0];
+                    setLocation(parseFloat(p.lat), parseFloat(p.lon), 13);
+                    const shortName = String(p.display_name || q).split(",").slice(0, 2).join(",").trim();
+                    setStatus("ok", "statusPlace", { name: shortName });
+                })
+                .catch(function () { setStatus("error", "errPlaceNetwork"); });
+        });
+
+        /* ---------------------------------------------------------
+           CATEGORY SELECTION
+        --------------------------------------------------------- */
+        function selectCategory(cat) {
+            selectedCat = categories[cat] ? cat : null;
+            catButtons.forEach(function (b) {
+                const on = b.getAttribute("data-cat") === selectedCat;
+                b.classList.toggle("is-selected", on);
+                b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+            checkReady();
+        }
+
+        catButtons.forEach(function (b) {
+            b.addEventListener("click", function () { selectCategory(this.getAttribute("data-cat")); });
+        });
+
+        radiusSelect.addEventListener("change", drawRadius);
+
+        /* ---------------------------------------------------------
+           GOOGLE MAPS / EARTH
+        --------------------------------------------------------- */
+        function categoryQuery() {
+            const c = categories[selectedCat];
+            return currentLang === "ar" ? c.qAr : c.qEn;
+        }
+
+        mapsBtn.addEventListener("click", function () {
+            if (!isReady()) return;
+            const url = "https://www.google.com/maps/search/" + encodeURIComponent(categoryQuery()) +
+                "/@" + userLat + "," + userLng + ",14z";
+            window.open(url, "_blank", "noopener");
+        });
+
+        earthBtn.addEventListener("click", function () {
+            if (!isReady()) return;
+            const url = "https://earth.google.com/web/search/" + encodeURIComponent(categoryQuery()) +
+                "/@" + userLat + "," + userLng + ",500a,1000d,35y,0h,0t,0r";
+            window.open(url, "_blank", "noopener");
+        });
+
+        /* ---------------------------------------------------------
+           NEARBY FACILITIES (OpenStreetMap / Overpass)
+        --------------------------------------------------------- */
+        const OVERPASS = [
+            "https://overpass-api.de/api/interpreter",
+            "https://overpass.kumi.systems/api/interpreter"
+        ];
+
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            const R = 6371, toRad = Math.PI / 180;
+            const dLat = (lat2 - lat1) * toRad, dLon = (lon2 - lon1) * toRad;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return 2 * R * Math.asin(Math.sqrt(a));
+        }
+
+        function fetchOverpass(query) {
+            let chain = Promise.reject(new Error("start"));
+            OVERPASS.forEach(function (endpoint) {
+                chain = chain.catch(function () {
+                    const ctrl = new AbortController();
+                    const timer = setTimeout(function () { ctrl.abort(); }, 28000);
+                    return fetch(endpoint, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: "data=" + encodeURIComponent(query),
+                        signal: ctrl.signal
+                    }).then(function (r) {
+                        clearTimeout(timer);
+                        if (!r.ok) throw new Error("http " + r.status);
+                        return r.json();
+                    }).catch(function (err) { clearTimeout(timer); throw err; });
+                });
+            });
+            return chain;
+        }
+
+        function normalize(el) {
+            const tags = el.tags || {};
+            const lat = el.lat != null ? el.lat : (el.center && el.center.lat);
+            const lon = el.lon != null ? el.lon : (el.center && el.center.lon);
+            if (lat == null || lon == null) return null;
+
+            let type = "doctor";
+            if (tags.amenity === "hospital" || tags.healthcare === "hospital") type = "hospital";
+            else if (tags.amenity === "clinic" || tags.healthcare === "clinic") type = "clinic";
+
+            return {
+                id: el.type + el.id, lat: lat, lon: lon, tags: tags, type: type,
+                dist: haversineKm(userLat, userLng, lat, lon)
+            };
+        }
+
+        findBtn.addEventListener("click", function () {
+            if (!isReady() || searching) return;
+
+            searching = true;
+            checkReady();
+            markersLayer.clearLayers();
+            resultsEl.innerHTML = '<div class="loc-loading"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>' + esc(tr("finding")) + "</span></div>";
+
+            const radius = Number(radiusSelect.value);
+            const r = radius * 1000;
+            const query = "[out:json][timeout:25];(" +
+                'nwr["amenity"~"^(hospital|clinic|doctors)$"](around:' + r + "," + userLat + "," + userLng + ");" +
+                'nwr["healthcare"~"^(hospital|clinic|doctor)$"](around:' + r + "," + userLat + "," + userLng + ");" +
+                ");out center tags 200;";
+
+            const cat = selectedCat;
+
+            fetchOverpass(query)
+                .then(function (json) {
+                    const seen = {};
+                    const items = [];
+                    (json.elements || []).forEach(function (el) {
+                        const it = normalize(el);
+                        if (it && !seen[it.id]) { seen[it.id] = true; items.push(it); }
+                    });
+                    lastSearch = { cat: cat, radius: radius, items: items, failed: false };
+                })
+                .catch(function () {
+                    lastSearch = { cat: cat, radius: radius, items: [], failed: true };
+                })
+                .then(function () {
+                    searching = false;
+                    checkReady();
+                    renderResults(true);
+                });
+        });
+
+        /* ---------------------------------------------------------
+           RENDER RESULTS
+        --------------------------------------------------------- */
+        function matchesCategory(item, cat) {
+            const tg = item.tags;
+            const hay = [tg.name, tg["name:ar"], tg["name:en"], tg["healthcare:speciality"], tg.speciality, tg.description]
+                .filter(Boolean).join(" ").toLowerCase();
+            return categories[cat].keys.some(function (k) { return hay.indexOf(k) !== -1; });
+        }
+
+        function displayName(item) {
+            const tg = item.tags;
+            const n = currentLang === "ar"
+                ? (tg["name:ar"] || tg.name || tg["name:en"])
+                : (tg["name:en"] || tg.name || tg["name:ar"]);
+            return n || tr("unnamed");
+        }
+
+        function typeLabel(type) {
+            return tr(type === "hospital" ? "typeHospital" : type === "clinic" ? "typeClinic" : "typeDoctor");
+        }
+
+        function typeIcon(type) {
+            return type === "hospital" ? "fa-hospital" : type === "clinic" ? "fa-house-medical" : "fa-user-doctor";
+        }
+
+        function addressOf(tg) {
+            const parts = [tg["addr:street"], tg["addr:housenumber"], tg["addr:suburb"] || tg["addr:city"]].filter(Boolean);
+            return parts.join(", ");
+        }
+
+        function renderResults(fit) {
+            markersLayer.clearLayers();
+            Object.keys(markerById).forEach(function (k) { delete markerById[k]; });
+            resultsEl.innerHTML = "";
+
+            if (!lastSearch) return;
+
+            if (lastSearch.failed) {
+                resultsEl.innerHTML = '<div class="loc-empty is-error"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i><span>' + esc(tr("errNetwork")) + "</span></div>";
+                return;
+            }
+
+            if (!lastSearch.items.length) {
+                resultsEl.innerHTML = '<div class="loc-empty"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>' +
+                    esc(tr("noResults", { r: lastSearch.radius })) + "</span></div>";
+                return;
+            }
+
+            const cat = lastSearch.cat;
+            const items = lastSearch.items.map(function (it) {
+                return { it: it, match: matchesCategory(it, cat) };
+            }).sort(function (a, b) {
+                if (a.match !== b.match) return a.match ? -1 : 1;
+                return a.it.dist - b.it.dist;
+            }).slice(0, 40);
+
+            const head = document.createElement("div");
+            head.className = "loc-results__head";
+            head.textContent = tr("resultsCount", { n: items.length, r: lastSearch.radius });
+            resultsEl.appendChild(head);
+
+            const list = document.createElement("div");
+            list.className = "loc-results__list";
+            resultsEl.appendChild(list);
+
+            const bounds = [[userLat, userLng]];
+
+            items.forEach(function (row) {
+                const it = row.it, tg = it.tags;
+                const name = displayName(it);
+                const addr = addressOf(tg);
+                const phone = tg.phone || tg["contact:phone"] || "";
+                const dirUrl = "https://www.google.com/maps/dir/?api=1&destination=" + it.lat + "," + it.lon;
+                const distText = tr("kmAway", { d: it.dist.toFixed(1) });
+
+                // Marker
+                const marker = L.marker([it.lat, it.lon], { icon: pinIcon(typeIcon(it.type), row.match ? "loc-pin--match" : "") });
+                marker.bindPopup(
+                    '<div dir="auto"><b>' + esc(name) + "</b><br>" + esc(typeLabel(it.type)) + " · " + esc(distText) + "</div>"
+                );
+                markersLayer.addLayer(marker);
+                markerById[it.id] = marker;
+                bounds.push([it.lat, it.lon]);
+
+                // Card
+                const card = document.createElement("article");
+                card.className = "loc-card" + (row.match ? " is-match" : "");
+                card.tabIndex = 0;
+                card.innerHTML =
+                    '<div class="loc-card__icon"><i class="fa-solid ' + typeIcon(it.type) + '" aria-hidden="true"></i></div>' +
+                    '<div class="loc-card__body">' +
+                        '<h4 class="loc-card__name">' + esc(name) + "</h4>" +
+                        '<p class="loc-card__meta">' + esc(typeLabel(it.type)) + " · " + esc(distText) + "</p>" +
+                        (addr ? '<p class="loc-card__addr"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ' + esc(addr) + "</p>" : "") +
+                        (row.match ? '<span class="loc-card__badge">' + esc(tr("matchBadge")) + "</span>" : "") +
+                    "</div>" +
+                    '<div class="loc-card__actions">' +
+                        '<a class="loc-card__link" href="' + esc(dirUrl) + '" target="_blank" rel="noopener"><i class="fa-solid fa-route" aria-hidden="true"></i> ' + esc(tr("directions")) + "</a>" +
+                        (phone ? '<a class="loc-card__link loc-card__link--ghost" href="tel:' + esc(phone.replace(/[^\d+]/g, "")) + '"><i class="fa-solid fa-phone" aria-hidden="true"></i> ' + esc(tr("callNow")) + "</a>" : "") +
+                    "</div>";
+
+                function focusOnMap() {
+                    map.setView([it.lat, it.lon], Math.max(map.getZoom(), 16));
+                    marker.openPopup();
+                    document.getElementById("map").scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+                card.addEventListener("click", function (e) { if (!e.target.closest("a")) focusOnMap(); });
+                card.addEventListener("keydown", function (e) {
+                    if ((e.key === "Enter" || e.key === " ") && e.target === card) { e.preventDefault(); focusOnMap(); }
+                });
+
+                list.appendChild(card);
+            });
+
+            const note = document.createElement("p");
+            note.className = "loc-results__note";
+            note.textContent = tr("dataNote");
+            resultsEl.appendChild(note);
+
+            if (fit && bounds.length > 1) map.fitBounds(bounds, { padding: [30, 30], maxZoom: 16 });
+        }
+
+        /* ---------------------------------------------------------
+           NAV LINKS -> LAST VIEWED DISEASE
+        --------------------------------------------------------- */
+        function updateDiseaseNavLinks() {
+            let last = null;
+            try { last = localStorage.getItem("rde-last-disease"); } catch (e) {}
+            if (!last) return;
+            document.querySelectorAll('[data-nav="journey"]').forEach(function (a) {
+                a.href = "disease.html?disease=" + encodeURIComponent(last);
+            });
+            document.querySelectorAll('[data-nav="resources"]').forEach(function (a) {
+                a.href = "disease.html?disease=" + encodeURIComponent(last) + "#sources";
+            });
+        }
+
+        /* ---------------------------------------------------------
+           LANGUAGE
+        --------------------------------------------------------- */
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem("rde-language", lang);
+            const isAr = lang === "ar";
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = isAr ? "rtl" : "ltr";
+            document.body.classList.toggle("rtl", isAr);
+            document.title = tr("pageTitle");
+
+            $("langBtnText").textContent = tr("langBtnText");
+
+            document.querySelectorAll("[data-i18n]").forEach(function (el) {
+                el.textContent = tr(el.getAttribute("data-i18n"));
+            });
+            document.querySelectorAll("[data-nav]").forEach(function (link) {
+                const k = link.getAttribute("data-nav");
+                link.textContent = tr("nav" + k.charAt(0).toUpperCase() + k.slice(1));
+            });
+
+            areaInput.placeholder = tr("areaPlaceholder");
+            radiusSelect.querySelectorAll("option").forEach(function (o) {
+                o.textContent = o.value + (isAr ? " كم" : " km");
+            });
+
+            renderStatus();
+            checkReady();
+            if (userMarker) userMarker.setPopupContent('<div dir="auto"><b>' + esc(tr("youAreHere")) + "</b></div>");
+            if (lastSearch) renderResults(false);
+        }
+
+        $("langBtn").addEventListener("click", function () {
+            applyLanguage(currentLang === "en" ? "ar" : "en");
+        });
+
+        /* ---------------------------------------------------------
+           MOBILE MENU
+        --------------------------------------------------------- */
+        const menuToggle = $("mobileMenuToggle"), menu = $("mobileMenu");
+        menuToggle.addEventListener("click", function () {
+            const open = menu.classList.toggle("is-open");
+            menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+            menu.setAttribute("aria-hidden", open ? "false" : "true");
+            const icon = menuToggle.querySelector("i");
+            icon.classList.toggle("fa-bars", !open);
+            icon.classList.toggle("fa-xmark", open);
+        });
+
+        /* ---------------------------------------------------------
+           INIT
+        --------------------------------------------------------- */
+        initMap();
+        updateDiseaseNavLinks();
+
+        // Pre-select a category from the URL (?category=... or ?disease=...)
+        (function () {
+            const p = new URLSearchParams(window.location.search);
+            const cat = (p.get("category") || "").toLowerCase();
+            const dis = String(p.get("disease") || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+            if (categories[cat]) selectedCat = cat;
+            else if (diseaseToCategory[dis]) selectedCat = diseaseToCategory[dis];
+            if (selectedCat) {
+                catButtons.forEach(function (b) {
+                    const on = b.getAttribute("data-cat") === selectedCat;
+                    b.classList.toggle("is-selected", on);
+                    b.setAttribute("aria-pressed", on ? "true" : "false");
+                });
+            }
+        })();
+
+        applyLanguage(currentLang);
+
+    })();
+    </script>
+    <!-- نافذة الشات بوت العائمة -->
+<!-- Medical chatbot (loaded directly, no iframe) -->
+<script src="chatbot.js?v=5" defer></script>
+</body>
+</html>

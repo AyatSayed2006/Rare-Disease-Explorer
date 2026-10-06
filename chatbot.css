@@ -1,0 +1,463 @@
+/* =====================================================
+   RARE DISEASE EXPLORER - CHATBOT  (RTL / LTR)
+   عربي  = الأيقونة أسفل اليسار
+   English = الأيقونة أسفل اليمين
+===================================================== */
+
+.rde-chat,
+.rde-chat *,
+.rde-chat *::before,
+.rde-chat *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- الحاوية ---------- */
+.rde-chat {
+    --c-primary: #216f74;
+    --c-primary-hover: #185a5e;
+    --c-primary-dark: #123e42;
+    --c-primary-light: #e6f3f1;
+    --c-card: #f1f8f7;
+    --c-card-border: #c2e2dd;
+    --c-heading: #102a36;
+    --c-body: #4e6571;
+    --c-border: #d6e2e2;
+    --c-bg: #f6faf9;
+    --rde-toggle: 60px;
+
+    position: fixed;
+    bottom: 24px;
+    left: 24px;           /* الافتراضي: عربي */
+    right: auto;
+    width: var(--rde-toggle);
+    height: var(--rde-toggle);
+    margin: 0;
+    padding: 0;
+    z-index: 99999;
+
+    font-family: "Cairo", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--c-body);
+
+    /* الحاوية نفسها لا تمنع الضغط على الصفحة */
+    pointer-events: none;
+
+    direction: rtl;
+    text-align: right;
+}
+
+.rde-chat[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+    left: 24px;
+    right: auto;
+}
+
+.rde-chat[dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+    right: 24px;
+    left: auto;
+}
+
+.rde-chat svg {
+    display: block;
+}
+
+.rde-chat button {
+    font-family: inherit;
+}
+
+/* ---------- زر الأيقونة ---------- */
+.rde-chat__toggle {
+    width: var(--rde-toggle);
+    height: var(--rde-toggle);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--c-primary);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(33, 111, 116, 0.35);
+    transition: transform 0.25s ease, background-color 0.2s ease;
+    pointer-events: auto;      /* الأيقونة فقط قابلة للضغط */
+}
+
+.rde-chat__toggle svg {
+    width: 26px;
+    height: 26px;
+}
+
+.rde-chat__toggle:hover {
+    background: var(--c-primary-hover);
+    transform: scale(1.06);
+}
+
+.rde-chat__toggle:active {
+    transform: scale(0.96);
+}
+
+.rde-chat__toggle:focus-visible,
+.rde-chat__close:focus-visible,
+.rde-chat__send:focus-visible,
+.rde-chat__chip:focus-visible {
+    outline: 3px solid rgba(33, 111, 116, 0.45);
+    outline-offset: 2px;
+}
+
+/* ---------- البانل ---------- */
+.rde-chat__panel {
+    position: absolute;
+    bottom: calc(var(--rde-toggle) + 14px);
+
+    /* عربي: الأيقونة يسار، فالبانل يمتد لليمين */
+    left: 0;
+    right: auto;
+
+    width: min(390px, calc(100vw - 32px));
+    height: min(580px, calc(100vh - 120px));
+    height: min(580px, calc(100dvh - 120px));
+
+    background: #ffffff;
+    border: 1px solid var(--c-border);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(16, 42, 54, 0.18);
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    /* مغلق افتراضياً */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(12px) scale(0.96);
+    transform-origin: bottom left;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease,
+        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* عربي */
+.rde-chat[dir="rtl"] .rde-chat__panel {
+    left: 0;
+    right: auto;
+    transform-origin: bottom left;
+}
+
+/* English: الأيقونة يمين، فالبانل يمتد لليسار */
+.rde-chat[dir="ltr"] .rde-chat__panel {
+    right: 0;
+    left: auto;
+    transform-origin: bottom right;
+}
+
+/* مفتوح */
+.rde-chat.is-open .rde-chat__panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+/* ---------- الهيدر ---------- */
+.rde-chat__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-dark) 100%);
+    color: #ffffff;
+}
+
+.rde-chat[dir="rtl"] .rde-chat__head { direction: rtl; text-align: right; }
+.rde-chat[dir="ltr"] .rde-chat__head { direction: ltr; text-align: left; }
+
+.rde-chat__mark {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+.rde-chat__mark svg {
+    width: 22px;
+    height: 22px;
+}
+
+.rde-chat__head-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.rde-chat__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: inherit;
+}
+
+.rde-chat__sub {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.85;
+    color: #ffffff;
+}
+
+.rde-chat__close {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    opacity: 0.8;
+    padding: 4px;
+    flex-shrink: 0;
+    display: flex;
+}
+
+.rde-chat__close svg {
+    width: 20px;
+    height: 20px;
+}
+
+.rde-chat__close:hover {
+    opacity: 1;
+}
+
+/* ---------- الرسائل ---------- */
+.rde-chat__list {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: var(--c-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overscroll-behavior: contain;
+}
+
+.rde-chat[dir="rtl"] .rde-chat__list { direction: rtl; text-align: right; }
+.rde-chat[dir="ltr"] .rde-chat__list { direction: ltr; text-align: left; }
+
+.rde-chat__msg {
+    max-width: 88%;
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.rde-chat__msg p {
+    margin: 0;
+}
+
+.rde-chat__msg--bot {
+    align-self: flex-start;
+    background: #ffffff;
+    color: var(--c-heading);
+    border: 1px solid var(--c-border);
+}
+
+.rde-chat__msg--user {
+    align-self: flex-end;
+    background: var(--c-primary);
+    color: #ffffff;
+}
+
+/* زوايا الفقاعات حسب الاتجاه */
+.rde-chat[dir="rtl"] .rde-chat__msg--bot  { border-top-right-radius: 4px; }
+.rde-chat[dir="rtl"] .rde-chat__msg--user { border-top-left-radius: 4px; }
+.rde-chat[dir="ltr"] .rde-chat__msg--bot  { border-top-left-radius: 4px; }
+.rde-chat[dir="ltr"] .rde-chat__msg--user { border-top-right-radius: 4px; }
+
+.rde-chat[dir="rtl"] .rde-chat__msg { text-align: right; }
+.rde-chat[dir="ltr"] .rde-chat__msg { text-align: left; }
+
+/* ---------- الاقتراحات ---------- */
+.rde-chat__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.rde-chat__chip {
+    border: 1px solid var(--c-card-border);
+    background: var(--c-primary-light);
+    color: var(--c-primary);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.rde-chat__chip:hover {
+    background: var(--c-primary);
+    color: #ffffff;
+}
+
+/* ---------- كروت الأمراض ---------- */
+.rde-chat__card {
+    background: var(--c-card);
+    border: 1px solid var(--c-card-border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rde-chat__card p {
+    margin: 0;
+}
+
+.rde-chat__card-title {
+    color: var(--c-heading);
+    font-weight: 700;
+}
+
+.rde-chat__tag {
+    font-size: 11px;
+    color: var(--c-primary);
+    font-weight: 600;
+}
+
+.rde-chat__btn {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 6px 12px;
+    background: var(--c-primary);
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 6px;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.rde-chat__btn:hover {
+    background: var(--c-primary-hover);
+}
+
+.rde-chat__note {
+    margin: 10px 0 0;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--c-body);
+    opacity: 0.85;
+}
+
+/* ---------- حقل الإدخال ---------- */
+.rde-chat__form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: #ffffff;
+    border-top: 1px solid var(--c-border);
+}
+
+.rde-chat[dir="rtl"] .rde-chat__form { direction: rtl; }
+.rde-chat[dir="ltr"] .rde-chat__form { direction: ltr; }
+
+.rde-chat__input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--c-border);
+    border-radius: 20px;
+    outline: none;
+    font-family: "Cairo", "Inter", sans-serif;
+    font-size: 13.5px;
+    background: #ffffff;
+    color: var(--c-heading);
+}
+
+.rde-chat[dir="rtl"] .rde-chat__input { direction: rtl; text-align: right; }
+.rde-chat[dir="ltr"] .rde-chat__input { direction: ltr; text-align: left; }
+
+.rde-chat__input:focus {
+    border-color: var(--c-primary);
+}
+
+.rde-chat__send {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--c-primary);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rde-chat__send svg {
+    width: 18px;
+    height: 18px;
+}
+
+.rde-chat__send:hover {
+    background: var(--c-primary-hover);
+}
+
+/* السهم يتقلب في العربي */
+.rde-chat[dir="rtl"] .rde-chat__send svg { transform: scaleX(-1); }
+.rde-chat[dir="ltr"] .rde-chat__send svg { transform: none; }
+
+/* ---------- الموبايل ---------- */
+@media (max-width: 480px) {
+    .rde-chat {
+        --rde-toggle: 56px;
+        bottom: 16px;
+    }
+
+    .rde-chat[dir="rtl"] { left: 16px; right: auto; }
+    .rde-chat[dir="ltr"] { right: 16px; left: auto; }
+
+    .rde-chat__panel {
+        width: calc(100vw - 32px);
+        height: min(580px, calc(100vh - 100px));
+        height: min(580px, calc(100dvh - 100px));
+    }
+
+    /* يمنع تكبير iOS عند الكتابة */
+    .rde-chat__input {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    .rde-chat { bottom: 12px; }
+    .rde-chat[dir="rtl"] { left: 12px; right: auto; }
+    .rde-chat[dir="ltr"] { right: 12px; left: auto; }
+    .rde-chat__panel { width: calc(100vw - 24px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rde-chat__toggle,
+    .rde-chat__panel {
+        transition: none;
+    }
+}

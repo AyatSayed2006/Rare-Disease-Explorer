@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rare Disease Comparison - Compare rare conditions with common clinical mimics, understand key differentiating signs, and learn diagnostic clues.">
+    <title>Rare Disease Comparison</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ================= HEADER ================= -->
+    <header class="header" id="header">
+        <div class="header__inner">
+            <a href="index.html" class="header__brand" aria-label="Rare Disease Explorer Home">
+                <span class="header__brand-icon">
+                    <svg class="header__brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                        <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                        <path d="M9 12H4s.5-1.5 2-2 3 .5 3 2z"/>
+                        <path d="M15 13v5s1.5-.5 2-2-.5-3-2-3z"/>
+                    </svg>
+                </span>
+                <span class="header__brand-title" data-i18n="brandName">Rare Disease Explorer</span>
+            </a>
+
+            <nav class="header__nav" id="mainNav" aria-label="Main Navigation">
+                <ul class="header__nav-list">
+                    <li class="header__nav-item">
+                        <a href="index.html" class="header__nav-link" data-nav="home">Home</a>
+                    </li>
+                    <li class="header__nav-item">
+                        <a href="diseases-comparison.html" class="header__nav-link header__nav-link--active" data-nav="comparison">Diseases Comparison</a>
+                    </li>
+                    <li class="header__nav-item">
+                        <a href="disease.html" class="header__nav-link" data-nav="journey">Disease Journey</a>
+                    </li>
+                    <li class="header__nav-item">
+                        <a href="location.html" class="header__nav-link" data-nav="location">Location</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header__actions">
+                <button type="button" class="header__lang-btn" id="langBtn" aria-label="Toggle language">
+                    <span class="header__lang-text" id="langBtnText">العربية</span>
+                </button>
+                <button type="button" class="header__mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-drawer" id="mobileMenu" aria-hidden="true">
+            <ul class="mobile-drawer__list">
+                <li><a href="index.html" class="mobile-drawer__link" data-nav="home">Home</a></li>
+                <li><a href="diseases-comparison.html" class="mobile-drawer__link mobile-drawer__link--active" data-nav="comparison">Diseases Comparison</a></li>
+                <li><a href="disease.html" class="mobile-drawer__link" data-nav="journey">Disease Journey</a></li>
+                <li><a href="location.html" class="mobile-drawer__link" data-nav="location">Location</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main id="mainContent">
+        <!-- ================= HERO & CONTROLS ================= -->
+        <section class="compare-hero">
+            <div class="compare-hero__inner">
+                <div class="compare-hero__top">
+                    <div class="compare-hero__content">
+                        <div class="compare-hero__badge">
+                            <i class="fa-solid fa-code-compare"></i>
+                            <span data-i18n="compareBadge">Clinical Cross-Condition Analysis</span>
+                        </div>
+
+                        <h1 class="compare-hero__title" data-i18n="compareTitle">🧬 Rare Disease Comparison</h1>
+
+                        <p class="compare-hero__desc" data-i18n="compareDesc">
+                            Explore clinical comparison pairs to understand why rare conditions can be confused with common mimics, and discover key differentiating signs and diagnostic clues.
+                        </p>
+                    </div>
+
+                    <!-- Side visual (same style as the other pages) -->
+                    <div class="compare-hero__visual" aria-hidden="true">
+                        <div class="compare-visual">
+                            <div class="compare-visual__ring">
+                                <div class="compare-visual__center">
+                                    <i class="fa-solid fa-code-compare"></i>
+                                </div>
+                            </div>
+                            <span class="compare-visual__node compare-visual__node--rare"><i class="fa-solid fa-dna"></i></span>
+                            <span class="compare-visual__node compare-visual__node--mimic"><i class="fa-solid fa-stethoscope"></i></span>
+                            <span class="compare-visual__node compare-visual__node--clue"><i class="fa-solid fa-key"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-controls">
+                    <div class="compare-filter-chips" role="tablist" aria-label="Category Filters">
+                        <button type="button" class="filter-chip is-active" data-filter="all" role="tab" aria-selected="true" data-i18n="filterAll">All (12)</button>
+                        <button type="button" class="filter-chip" data-filter="neurological" role="tab" data-i18n="filterNeuro">Neurological</button>
+                        <button type="button" class="filter-chip" data-filter="genetic-metabolic" role="tab" data-i18n="filterGenetic">Genetic & Metabolic</button>
+                        <button type="button" class="filter-chip" data-filter="respiratory" role="tab" data-i18n="filterRespiratory">Respiratory</button>
+                        <button type="button" class="filter-chip" data-filter="musculoskeletal" role="tab" data-i18n="filterMusculo">Musculoskeletal</button>
+                        <button type="button" class="filter-chip" data-filter="blood-disorders" role="tab" data-i18n="filterBlood">Blood Disorders</button>
+                        <button type="button" class="filter-chip" data-filter="vision-hearing" role="tab" data-i18n="filterVision">Vision & Hearing</button>
+                        <button type="button" class="filter-chip" data-filter="genetic-syndromes" role="tab" data-i18n="filterSyndromes">Genetic Syndromes</button>
+                        <button type="button" class="filter-chip" data-filter="skin-disorders" role="tab" data-i18n="filterSkin">Skin Disorders</button>
+                        <button type="button" class="filter-chip" data-filter="digestive-kidney" role="tab" data-i18n="filterDigestive">Digestive & Kidney</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= COMPARISON CARDS ================= -->
+        <section class="compare-section">
+            <div class="compare-section__container">
+                <div class="compare-results-header">
+                    <div class="compare-results-left">
+                        <span class="compare-count-badge" id="compareResultsCount">
+                            Showing <strong>12</strong> comparisons
+                        </span>
+                        <button type="button" class="compare-show-all" id="showAllBtn" hidden>Show all comparisons</button>
+                    </div>
+                    <a href="index.html#categories" class="btn-back-home" style="display:inline-flex; align-items:center; gap:6px; font-size:0.85rem; color:var(--primary); font-weight:600;">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span data-i18n="backToExplorer">Browse Body Categories</span>
+                    </a>
+                </div>
+
+                <div class="compare-cards-list" id="compareCardsContainer"></div>
+
+                <div class="compare-note-box">
+                    <div class="compare-note-box__icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div class="compare-note-box__content">
+                        <h3 class="compare-note-box__title" data-i18n="noteTitle">🔎 Important Note</h3>
+                        <p class="compare-note-box__desc" data-i18n="noteDesc">
+                            This comparison is educational and does not provide a diagnosis. Similar symptoms can occur in many different conditions, and diagnosis requires comprehensive evaluation by qualified healthcare professionals.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    (function () {
+        "use strict";
+
+        /* ---------------------------------------------------------
+           COMPARISON DATA (12 pairs)
+        --------------------------------------------------------- */
+        const comparisonPairs = [
+            {
+                id: 1, category: "neurological",
+                categoryNameEn: "Neurological", categoryNameAr: "الجهاز العصبي",
+                rareNameEn: "Rett Syndrome", rareNameAr: "متلازمة ريت",
+                rareDescEn: "Rett syndrome is a rare genetic neurological disorder that mainly affects girls. Children may initially develop normally, followed by loss of acquired skills, especially speech, hand use, and communication.",
+                rareDescAr: "متلازمة ريت هي اضطراب عصبي وراثي نادر يؤثر بشكل أساسي على البنات. قد يبدأ الطفل في النمو بصورة طبيعية، ثم يفقد بعض المهارات التي اكتسبها، خاصة الكلام واستخدام اليدين والتواصل.",
+                mimicNameEn: "Autism Spectrum Disorder (ASD)", mimicNameAr: "اضطراب طيف التوحد",
+                mimicDescEn: "Autism is a common neurodevelopmental condition that affects communication, social interaction, behavior, and sensory processing.",
+                mimicDescAr: "التوحد هو اضطراب نمائي عصبي شائع يؤثر على التواصل والتفاعل الاجتماعي والسلوك والاستجابة للمؤثرات الحسية.",
+                whyConfusedEn: "Both may involve developmental delay, communication difficulties, and repetitive behaviors.",
+                whyConfusedAr: "كلاهما قد يتضمن تأخرًا في التطور، وصعوبات في التواصل، وسلوكيات متكررة.",
+                clues: [
+                    { en: "Loss of previously acquired skills", ar: "فقدان مهارات مكتسبة سابقًا" },
+                    { en: "Characteristic repetitive hand movements (wringing/washing)", ar: "حركات اليد المتكررة والمميزة" },
+                    { en: "Regression after an initial period of development", ar: "حدوث تراجع بعد فترة من التطور الطبيعي" },
+                    { en: "Genetic testing (MECP2) may help confirm Rett syndrome", ar: "قد يساعد الاختبار الجيني في تأكيد متلازمة ريت" }
+                ]
+            },
+            {
+                id: 2, category: "neurological",
+                categoryNameEn: "Neurological", categoryNameAr: "الجهاز العصبي",
+                rareNameEn: "Huntington's Disease", rareNameAr: "مرض هنتنغتون",
+                rareDescEn: "Huntington's disease is a progressive inherited neurological disorder that affects movement, cognition, and behavior.",
+                rareDescAr: "مرض هنتنغتون هو اضطراب عصبي وراثي تدريجي يؤثر على الحركة والقدرات المعرفية والسلوك.",
+                mimicNameEn: "Parkinson's Disease", mimicNameAr: "مرض باركنسون",
+                mimicDescEn: "Parkinson's disease is a progressive neurological disorder mainly associated with slowed movement, muscle rigidity, resting tremor, and balance problems.",
+                mimicDescAr: "مرض باركنسون هو اضطراب عصبي تدريجي يرتبط بشكل أساسي ببطء الحركة، وتيبس العضلات، والرعشة أثناء الراحة، ومشاكل التوازن.",
+                whyConfusedEn: "Both are neurological movement disorders and may cause problems with coordination and daily movement.",
+                whyConfusedAr: "كلاهما من اضطرابات الحركة العصبية، وقد يسببان مشاكل في الحركة والتنسيق والقيام بالأنشطة اليومية.",
+                clues: [
+                    { en: "Huntington's commonly causes chorea (involuntary movements)", ar: "هنتنغتون يتميز غالبًا بحركات لا إرادية غير منتظمة (Chorea)" },
+                    { en: "Parkinson's is characterized by resting tremor, bradykinesia, and rigidity", ar: "باركنسون يتميز ببطء الحركة والتيبس والرعشة أثناء الراحة" },
+                    { en: "Huntington's may also cause significant behavioral and cognitive changes", ar: "قد يسبب هنتنغتون تغيرات واضحة في السلوك والقدرات المعرفية" }
+                ]
+            },
+            {
+                id: 3, category: "digestive-kidney",
+                categoryNameEn: "Digestive & Metabolic", categoryNameAr: "الجهاز الهضمي والاستقلابي",
+                rareNameEn: "Wilson Disease", rareNameAr: "مرض ويلسون",
+                rareDescEn: "Wilson disease is a rare inherited disorder that causes copper to accumulate in the body, particularly in the liver and brain. It may cause liver disease, tremors, abnormal movements, coordination problems, and psychiatric symptoms.",
+                rareDescAr: "مرض ويلسون هو اضطراب وراثي نادر يؤدي إلى تراكم النحاس في الجسم، خاصة في الكبد والدماغ. قد يسبب أمراضًا في الكبد، ورعشة، وحركات غير طبيعية، ومشاكل في التنسيق، وأعراضًا نفسية.",
+                mimicNameEn: "Parkinsonism", mimicNameAr: "الباركنسونية واضطرابات الحركة",
+                mimicDescEn: "Parkinsonism describes a group of movement symptoms including slowed movement, rigidity, tremor, and gait problems.",
+                mimicDescAr: "الباركنسونية هي وصف لمجموعة من أعراض الحركة تشمل بطء الحركة، والتيبس، والرعشة، ومشاكل المشي.",
+                whyConfusedEn: "Wilson disease can produce movement symptoms that resemble Parkinsonism, especially in younger patients.",
+                whyConfusedAr: "يمكن أن يسبب مرض ويلسون أعراضًا حركية تشبه الباركنسونية، خاصة لدى المرضى الأصغر سنًا.",
+                clues: [
+                    { en: "Liver involvement & elevated liver enzymes", ar: "وجود مشاكل وأمراض في الكبد" },
+                    { en: "Kayser-Fleischer rings around the cornea", ar: "حلقات كايزر-فلايشر حول القرنية" },
+                    { en: "Abnormal copper-related laboratory tests", ar: "نتائج غير طبيعية في فحوصات النحاس" },
+                    { en: "Genetic testing (ATP7B) may support diagnosis", ar: "قد يساعد الاختبار الجيني في تأكيد التشخيص" }
+                ]
+            },
+            {
+                id: 4, category: "genetic-metabolic",
+                categoryNameEn: "Genetic & Metabolic", categoryNameAr: "الأمراض الجينية والاستقلابية",
+                rareNameEn: "Gaucher Disease", rareNameAr: "مرض غوشيه",
+                rareDescEn: "Gaucher disease is a rare inherited metabolic disorder in which certain fatty substances accumulate inside cells. It may cause enlarged liver and spleen, anemia, low platelets, bone pain, and fatigue.",
+                rareDescAr: "مرض غوشيه هو اضطراب استقلابي وراثي نادر تتراكم فيه مواد دهنية معينة داخل الخلايا. قد يسبب تضخم الكبد والطحال، وفقر الدم، وانخفاض الصفائح الدموية، وآلام العظام، والإرهاق.",
+                mimicNameEn: "Leukemia / Lymphoma", mimicNameAr: "اللوكيميا / الليمفوما",
+                mimicDescEn: "Leukemia and lymphoma are cancers affecting blood-forming tissues or the lymphatic system.",
+                mimicDescAr: "اللوكيميا والليمفوما من أنواع السرطان التي تؤثر على الأنسجة المكونة للدم أو الجهاز الليمفاوي.",
+                whyConfusedEn: "Gaucher disease may cause enlarged organs and blood abnormalities that can also occur in blood cancers.",
+                whyConfusedAr: "قد يسبب غوشيه تضخم الأعضاء واضطرابات في خلايا الدم، وهي علامات قد تظهر أيضًا في بعض سرطانات الدم.",
+                clues: [
+                    { en: "Bone involvement and chronic bone pain", ar: "إصابة العظام وآلامها" },
+                    { en: "Characteristic non-malignant blood findings", ar: "تغيرات مميزة في الدم" },
+                    { en: "Beta-glucosidase enzyme and genetic testing", ar: "فحوصات الإنزيمات والاختبارات الجينية" },
+                    { en: "Specialized metabolic & hematological evaluation is needed", ar: "يحتاج التشخيص إلى تقييم متخصص" }
+                ]
+            },
+            {
+                id: 5, category: "respiratory",
+                categoryNameEn: "Respiratory", categoryNameAr: "الجهاز التنفسي",
+                rareNameEn: "Cystic Fibrosis", rareNameAr: "التليف الكيسي",
+                rareDescEn: "Cystic fibrosis is an inherited disorder that causes thick, sticky secretions, especially affecting the lungs and digestive system. It may cause chronic cough, repeated lung infections, breathing difficulties, and digestive or growth problems.",
+                rareDescAr: "التليف الكيسي هو اضطراب وراثي يؤدي إلى إفرازات سميكة ولزجة تؤثر بشكل خاص على الرئتين والجهاز الهضمي. قد يسبب كحة مزمنة، والتهابات رئوية متكررة، وصعوبة في التنفس، ومشاكل في الهضم أو النمو.",
+                mimicNameEn: "Asthma / Recurrent Respiratory Infections", mimicNameAr: "الربو / التهابات الجهاز التنفسي المتكررة",
+                mimicDescEn: "Asthma is a common condition that causes airway inflammation and narrowing, leading to coughing, wheezing, and shortness of breath.",
+                mimicDescAr: "الربو حالة شائعة تسبب التهاب وضيق الشعب الهوائية، مما يؤدي إلى الكحة، والصفير، وضيق التنفس.",
+                whyConfusedEn: "Both may cause chronic cough, wheezing, and breathing difficulties.",
+                whyConfusedAr: "كلاهما قد يسبب الكحة المزمنة، والصفير، وصعوبة التنفس.",
+                clues: [
+                    { en: "Recurrent severe respiratory infections", ar: "التهابات تنفسية متكررة" },
+                    { en: "Thick sticky respiratory secretions", ar: "إفرازات تنفسية سميكة" },
+                    { en: "Digestive or growth problems and poor nutrient absorption", ar: "مشاكل هضمية أو في النمو" },
+                    { en: "Sweat chloride testing and CFTR genetic testing", ar: "اختبار كلوريد العرق والاختبارات الجينية" }
+                ]
+            },
+            {
+                id: 6, category: "musculoskeletal",
+                categoryNameEn: "Musculoskeletal", categoryNameAr: "الجهاز العضلي الهيكلي",
+                rareNameEn: "Fibrodysplasia Ossificans Progressiva (FOP)", rareNameAr: "خلل التعظم الليفي المترقي (FOP)",
+                rareDescEn: "FOP is an extremely rare genetic disorder in which bone develops in muscles and other soft tissues where bone should not normally form. It can cause painful swelling, progressive stiffness, and loss of movement.",
+                rareDescAr: "FOP هو اضطراب وراثي نادر جدًا يتكون فيه العظم داخل العضلات والأنسجة الرخوة في أماكن لا ينبغي أن يتكون فيها العظم. قد يسبب تورمًا مؤلمًا، وتيبسًا تدريجيًا، وفقدانًا للحركة.",
+                mimicNameEn: "Ankylosing Spondylitis", mimicNameAr: "التهاب الفقار اللاصق",
+                mimicDescEn: "Ankylosing spondylitis is a chronic inflammatory disease that mainly affects the spine and sacroiliac joints.",
+                mimicDescAr: "التهاب الفقار اللاصق هو مرض التهابي مزمن يؤثر بشكل أساسي على العمود الفقري والمفاصل العجزية الحرقفية.",
+                whyConfusedEn: "Both can cause stiffness, pain, and progressive limitations in movement.",
+                whyConfusedAr: "كلاهما قد يسبب التيبس والألم وتزايد محدودية الحركة.",
+                clues: [
+                    { en: "Abnormal big toes (malformed halluces) present from birth", ar: "تشوهات مميزة في إصبع القدم الكبير منذ الولادة في FOP" },
+                    { en: "Heterotopic bone formation in muscles & soft tissues", ar: "تكوّن العظام داخل الأنسجة الرخوة" },
+                    { en: "ACVR1 genetic testing confirms FOP", ar: "الاختبارات الجينية لجين ACVR1" },
+                    { en: "Careful differentiation required: invasive biopsies can trigger severe bone flare-ups", ar: "يجب التمييز بعناية لأن الإجراءات التدخلية قد تسبب نوبات تكوّن عظمي خطيرة" }
+                ]
+            },
+            {
+                id: 7, category: "musculoskeletal",
+                categoryNameEn: "Musculoskeletal", categoryNameAr: "الجهاز العضلي الهيكلي",
+                rareNameEn: "Ehlers-Danlos Syndromes (EDS)", rareNameAr: "متلازمات إهلرز-دانلوس (EDS)",
+                rareDescEn: "EDS is a group of inherited connective tissue disorders. Some types can cause joint hypermobility, joint instability, fragile tissues, easy bruising, and chronic pain.",
+                rareDescAr: "EDS هي مجموعة من اضطرابات النسيج الضام الوراثية. بعض أنواعها قد تسبب فرط مرونة المفاصل، وعدم استقرارها، وهشاشة بعض الأنسجة، وسهولة ظهور الكدمات، والألم المزمن.",
+                mimicNameEn: "Fibromyalgia", mimicNameAr: "الفيبروميالجيا",
+                mimicDescEn: "Fibromyalgia is a condition associated with widespread chronic pain, fatigue, sleep problems, and difficulties with concentration.",
+                mimicDescAr: "الفيبروميالجيا حالة ترتبط بالألم المزمن المنتشر، والإرهاق، ومشاكل النوم، وصعوبة التركيز.",
+                whyConfusedEn: "Both may involve chronic widespread pain and fatigue.",
+                whyConfusedAr: "كلاهما قد يتضمن ألمًا مزمنًا منتشرًا وإرهاقًا.",
+                clues: [
+                    { en: "Marked joint hypermobility (Beighton score assessment)", ar: "فرط مرونة المفاصل" },
+                    { en: "Frequent joint subluxations and instability", ar: "عدم استقرار المفاصل المتكرر" },
+                    { en: "Skin hyperextensibility and easy bruising in certain types", ar: "سهولة ظهور الكدمات أو بعض خصائص مرونة الجلد" },
+                    { en: "Connective tissue genetic assessment depending on EDS type", ar: "قد يكون التقييم الجيني مهمًا حسب نوع EDS" }
+                ]
+            },
+            {
+                id: 8, category: "blood-disorders",
+                categoryNameEn: "Blood Disorders", categoryNameAr: "اضطرابات الدم",
+                rareNameEn: "Sickle Cell Disease", rareNameAr: "مرض الخلايا المنجلية",
+                rareDescEn: "Sickle cell disease is an inherited blood disorder affecting hemoglobin and red blood cells. It can cause chronic anemia, pain crises, red blood cell destruction, and complications affecting different organs.",
+                rareDescAr: "مرض الخلايا المنجلية هو اضطراب دم وراثي يؤثر على الهيموجلوبين وخلايا الدم الحمراء. قد يسبب فقر دم مزمن، ونوبات ألم، وتكسير خلايا الدم الحمراء، ومضاعفات تؤثر على أعضاء مختلفة.",
+                mimicNameEn: "Thalassemia", mimicNameAr: "الثلاسيميا",
+                mimicDescEn: "Thalassemia is a group of inherited blood disorders that affect the body's production of hemoglobin. It can cause chronic anemia, fatigue, pallor, and in severe cases, a need for regular blood transfusions.",
+                mimicDescAr: "الثلاسيميا هي مجموعة من اضطرابات الدم الوراثية التي تؤثر على إنتاج الجسم للهيموجلوبين. قد تسبب فقر الدم المزمن، والإرهاق، والشحوب، وفي الحالات الشديدة قد يحتاج المريض إلى نقل دم متكرر.",
+                whyConfusedEn: "Both are inherited hemoglobin disorders and can cause chronic anemia.",
+                whyConfusedAr: "كلاهما اضطرابات وراثية مرتبطة بالهيموجلوبين ويمكن أن يسببا فقر دم مزمن.",
+                clues: [
+                    { en: "Sickle cell involves sickle-shaped RBCs and acute vaso-occlusive pain crises", ar: "الخلايا المنجلية تتميز بتغير شكل كرات الدم وحدوث التمنجل ونوبات الألم" },
+                    { en: "Thalassemia involves impaired globin synthesis and microcytic anemia", ar: "الثلاسيميا ترتبط بانخفاض إنتاج سلاسل الجلوبين" },
+                    { en: "Hemoglobin electrophoresis / HPLC clearly differentiates them", ar: "تحليل الهيموجلوبين والترحيل الكهربائي يساعد في التفرقة بينهما" }
+                ]
+            },
+            {
+                id: 9, category: "blood-disorders",
+                categoryNameEn: "Blood Disorders", categoryNameAr: "اضطرابات الدم",
+                rareNameEn: "Paroxysmal Nocturnal Hemoglobinuria (PNH)", rareNameAr: "بيلة الهيموجلوبين الليلية الانتيابية (PNH)",
+                rareDescEn: "PNH is a rare acquired blood disorder in which certain blood cells become vulnerable to destruction by the complement system. It may cause hemolytic anemia, fatigue, dark urine, low blood cell counts, and serious blood clots.",
+                rareDescAr: "PNH هو اضطراب دموي مكتسب نادر تصبح فيه بعض خلايا الدم معرضة للتدمير بواسطة جهاز المتممة. قد يسبب تكسير خلايا الدم الحمراء، والإرهاق، وتغير لون البول، وانخفاض خلايا الدم، وجلطات دموية خطيرة.",
+                mimicNameEn: "Aplastic Anemia", mimicNameAr: "فقر الدم اللاتنسجي",
+                mimicDescEn: "Aplastic anemia occurs when the bone marrow does not produce enough blood cells. It can cause anemia, infections due to low white blood cells, and bleeding due to low platelets.",
+                mimicDescAr: "يحدث فقر الدم اللاتنسجي عندما لا ينتج نخاع العظم عددًا كافيًا من خلايا الدم. قد يسبب فقر الدم، والعدوى بسبب انخفاض كرات الدم البيضاء، والنزيف بسبب انخفاض الصفائح الدموية.",
+                whyConfusedEn: "Both can cause low blood cell counts and severe fatigue, and they can sometimes occur in related clinical settings.",
+                whyConfusedAr: "كلاهما قد يسبب انخفاض خلايا الدم والإرهاق الشديد، وقد يرتبطان أحيانًا بسياقات مرضية متقاربة.",
+                clues: [
+                    { en: "Intravascular hemolysis with high LDH and low haptoglobin", ar: "تكسير خلايا الدم داخل الأوعية الدموية" },
+                    { en: "Dark or cola-colored morning urine (hemoglobinuria)", ar: "تغير لون البول للداكن خاصة في الصباح" },
+                    { en: "High propensity for atypical thrombosis (e.g. hepatic/mesenteric)", ar: "خطر الإصابة بالجلطات الدموية" },
+                    { en: "Flow cytometry for GPI-anchored proteins (CD55/CD59) is crucial", ar: "تحليل التدفق الخلوي مهم وحاسم في تشخيص PNH" }
+                ]
+            },
+            {
+                id: 10, category: "vision-hearing",
+                categoryNameEn: "Vision & Hearing", categoryNameAr: "البصر والسمع",
+                rareNameEn: "Usher Syndrome", rareNameAr: "متلازمة أشر",
+                rareDescEn: "Usher syndrome is a group of inherited disorders characterized by hearing loss combined with progressive retinal degeneration. It can lead to progressive vision loss and difficulties with night vision and peripheral vision.",
+                rareDescAr: "متلازمة أشر هي مجموعة من الاضطرابات الوراثية التي تتميز بفقدان السمع مع تدهور تدريجي في شبكية العين. قد تؤدي إلى فقدان تدريجي للرؤية، ومشاكل في الرؤية الليلية والرؤية الجانبية.",
+                mimicNameEn: "Isolated Hearing Loss / Retinal Disorders", mimicNameAr: "اضطرابات السمع والبصر المنفصلة",
+                mimicDescEn: "Other hearing-loss conditions or retinal disorders may initially be considered depending on which symptom appears first.",
+                mimicDescAr: "قد يتم التفكير في اضطرابات أخرى لفقدان السمع أو أمراض الشبكية حسب العرض الذي يظهر أولًا.",
+                whyConfusedEn: "Hearing loss or vision problems may initially appear as separate conditions.",
+                whyConfusedAr: "قد يظهر فقدان السمع أو مشاكل الرؤية في البداية وكأن كل مشكلة منهما حالة منفصلة.",
+                clues: [
+                    { en: "Dual combination of sensorineural hearing loss + progressive retinitis pigmentosa", ar: "اجتماع فقدان السمع + تدهور شبكية العين تدريجيًا" },
+                    { en: "Onset of night blindness (nyctalopia) and tunnel vision in youth", ar: "العشى الليلي وفقدان الرؤية المحيطية" },
+                    { en: "Genetic panel testing across MYO7A, USH2A, and related genes", ar: "الاختبارات الجينية الشاملة للجينات المرتبطة" }
+                ]
+            },
+            {
+                id: 11, category: "genetic-syndromes",
+                categoryNameEn: "Genetic Syndromes", categoryNameAr: "المتلازمات الوراثية",
+                rareNameEn: "Angelman Syndrome", rareNameAr: "متلازمة أنجلمان",
+                rareDescEn: "Angelman syndrome is a rare genetic neurological disorder associated with significant developmental and intellectual difficulties. It may include severe speech difficulties, movement and balance problems, seizures, sleep problems, and characteristic behavioral features.",
+                rareDescAr: "متلازمة أنجلمان هي اضطراب عصبي وراثي نادر يرتبط بتأخر واضح في التطور والقدرات الذهنية. قد تشمل صعوبات شديدة في الكلام، ومشاكل الحركة والتوازن، والتشنجات، واضطرابات النوم، وخصائص سلوكية مميزة.",
+                mimicNameEn: "Autism Spectrum Disorder", mimicNameAr: "اضطراب طيف التوحد",
+                mimicDescEn: "Autism affects communication, social interaction, behavior, and sensory processing.",
+                mimicDescAr: "التوحد يؤثر على التواصل، والتفاعل الاجتماعي، والسلوك، والاستجابة للمؤثرات الحسية.",
+                whyConfusedEn: "Both may involve developmental delay, limited speech, and behavioral differences.",
+                whyConfusedAr: "كلاهما قد يتضمن تأخرًا في التطور، وقلة الكلام، واختلافات سلوكية.",
+                clues: [
+                    { en: "Severe speech impairment (minimal or no expressive words)", ar: "صعوبة شديدة وشبه انعدام للكلام المنطوق" },
+                    { en: "Ataxic balance and movement problems with jerky gait", ar: "مشاكل التوازن والحركة وحركات المشي المهتزة" },
+                    { en: "Recurrent seizures and unique EEG patterns", ar: "التشنجات ومخطط الدماغ المميز" },
+                    { en: "Characteristic happy demeanor, frequent laughter, and hand flapping", ar: "خصائص سلوكية مميزة (الابتسام المستمر ورفرفة اليدين)" },
+                    { en: "15q11-q13 methylation testing confirms Angelman syndrome", ar: "يمكن أن يساعد الاختبار الجيني في تأكيد متلازمة أنجلمان" }
+                ]
+            },
+            {
+                id: 12, category: "skin-disorders",
+                categoryNameEn: "Skin Disorders", categoryNameAr: "الأمراض الجلدية",
+                rareNameEn: "Epidermolysis Bullosa (EB)", rareNameAr: "انحلال البشرة الفقاعي (EB)",
+                rareDescEn: "Epidermolysis bullosa is a group of inherited disorders that make the skin extremely fragile. Blisters and wounds may develop after minor friction or trauma.",
+                rareDescAr: "انحلال البشرة الفقاعي هو مجموعة من الاضطرابات الوراثية التي تجعل الجلد شديد الهشاشة. قد تظهر الفقاعات والجروح نتيجة احتكاك أو إصابة بسيطة.",
+                mimicNameEn: "Eczema / Impetigo", mimicNameAr: "الإكزيما / القوباء",
+                mimicDescEn: "Eczema is a common inflammatory skin condition that can cause dry, itchy, red skin. Impetigo is a common bacterial skin infection causing blisters, sores, and crusting.",
+                mimicDescAr: "الإكزيما حالة جلدية التهابية شائعة تسبب جفاف الجلد والحكة والاحمرار. القوباء عدوى جلدية بكتيرية شائعة قد تسبب فقاعات وتقرحات وقشور مميزة.",
+                whyConfusedEn: "Different skin conditions can cause blisters, sores, redness, or irritated skin.",
+                whyConfusedAr: "هناك أمراض جلدية مختلفة يمكن أن تسبب فقاعات أو جروحًا أو احمرارًا وتهيجًا بالجلد.",
+                clues: [
+                    { en: "Blisters develop following minimal mechanical friction or pressure", ar: "ظهور الفقاعات بعد احتكاك بسيط" },
+                    { en: "Recurrent non-healing wounds and fragile mucosal surfaces", ar: "تكرار الجروح ومشاكل الأغشية المخاطية" },
+                    { en: "Symptoms beginning early in life (neonatal/infancy period)", ar: "ظهور الأعراض منذ سن مبكرة جدًا" },
+                    { en: "Immunofluorescence skin mapping and genetic testing establish the exact EB type", ar: "قد تساعد خزعة الجلد والاختبارات الجينية في تحديد نوع EB" }
+                ]
+            }
+        ];
+
+        /* ---------------------------------------------------------
+           PAIR ID -> DISEASE KEY (as used by disease.html)
+        --------------------------------------------------------- */
+        const pairDiseaseIds = {
+            1: "rett", 2: "huntington", 3: "wilson", 4: "gaucher",
+            5: "cysticFibrosis", 6: "fop", 7: "eds", 8: "sickleCell",
+            9: "pnh", 10: "usher", 11: "angelman", 12: "eb"
+        };
+
+        const normalizeKey = function (s) {
+            return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        };
+
+        /* ---------------------------------------------------------
+           TRANSLATIONS (strictly one language at a time)
+        --------------------------------------------------------- */
+        let currentLang = localStorage.getItem("rde-language") || "en";
+
+        const uiDict = {
+            en: {
+                brandName: "Rare Disease Explorer",
+                pageTitle: "Rare Disease Comparison",
+                langBtnText: "العربية",
+                navHome: "Home",
+                navComparison: "Diseases Comparison",
+                navJourney: "Disease Journey",
+                navLocation: "Location",
+
+                compareBadge: "Clinical Cross-Condition Analysis",
+                compareTitle: " Rare Disease Comparison",
+                compareDesc: "Explore clinical comparison pairs to understand why rare conditions can be confused with common mimics, and discover key differentiating signs and diagnostic clues.",
+
+                filterAll: "All (12)",
+                filterNeuro: "Neurological",
+                filterGenetic: "Genetic & Metabolic",
+                filterRespiratory: "Respiratory",
+                filterMusculo: "Musculoskeletal",
+                filterBlood: "Blood Disorders",
+                filterVision: "Vision & Hearing",
+                filterSyndromes: "Genetic Syndromes",
+                filterSkin: "Skin Disorders",
+                filterDigestive: "Digestive & Kidney",
+                showingComparisons: "Showing",
+                comparisonsWord: "comparisons",
+                backToExplorer: "Browse Body Categories",
+                showAll: "Show all comparisons",
+
+                tagRare: "Rare Disease",
+                tagMimic: "Common Mimic",
+                vsWord: "VS",
+                whyConfusedTitle: "Why can they be confused?",
+                keyCluesTitle: "Key Clues & Differentiating Signs",
+                exploreJourneyBtn: "Explore Disease Journey",
+
+                noteTitle: "🔎 Important Note",
+                noteDesc: "This comparison is educational and does not provide a diagnosis. Similar symptoms can occur in many different conditions, and diagnosis requires comprehensive evaluation by qualified healthcare professionals.",
+                noResults: "No matching comparisons found. Try searching another keyword or clearing filters."
+            },
+            ar: {
+                brandName: "مستكشف الأمراض النادرة",
+                pageTitle: "مقارنة الأمراض النادرة",
+                langBtnText: "English",
+                navHome: "الرئيسية",
+                navComparison: "مقارنة الأمراض",
+                navJourney: "رحلة المرض",
+                navLocation: "الموقع",
+
+                compareBadge: "التحليل السريري المتقاطع للحالات",
+                compareTitle: " مقارنة الأمراض النادرة",
+                compareDesc: "استكشف أزواج المقارنات السريرية لفهم أسباب الالتباس بين الحالات النادرة والأمراض الشائعة المشابهة، وتعرّف على العلامات الفارقة والفحوصات التشخيصية الحاسمة.",
+
+                filterAll: "الكل (12)",
+                filterNeuro: "الجهاز العصبي",
+                filterGenetic: "الأمراض الجينية والاستقلابية",
+                filterRespiratory: "الجهاز التنفسي",
+                filterMusculo: "الجهاز العضلي الهيكلي",
+                filterBlood: "اضطرابات الدم",
+                filterVision: "البصر والسمع",
+                filterSyndromes: "المتلازمات الوراثية",
+                filterSkin: "الأمراض الجلدية",
+                filterDigestive: "الجهاز الهضمي والكلى",
+                showingComparisons: "عرض",
+                comparisonsWord: "مقارنات",
+                backToExplorer: "تصفح أجهزة الجسم",
+                showAll: "عرض كل المقارنات",
+
+                tagRare: "المرض النادر",
+                tagMimic: "المرض المشابه الشائع",
+                vsWord: "مقابل",
+                whyConfusedTitle: "لماذا قد يحدث الالتباس؟",
+                keyCluesTitle: "العلامات الفارقة والأدلة التشخيصية",
+                exploreJourneyBtn: "استكشف رحلة المرض",
+
+                noteTitle: "🔎 ملاحظة مهمة",
+                noteDesc: "هذه المقارنات للتوعية والتعليم فقط ولا تقدم تشخيصًا طبيًا. قد تظهر الأعراض المتشابهة في العديد من الحالات المختلفة، ويحتاج التشخيص إلى تقييم شامل من متخصصين مؤهلين في الرعاية الصحية.",
+                noResults: "لم يتم العثور على مقارنات مطابقة. جرب البحث بكلمة أخرى أو تغيير الفلتر."
+            }
+        };
+
+        /* ---------------------------------------------------------
+           DOM
+        --------------------------------------------------------- */
+        const cardsContainer = document.getElementById("compareCardsContainer");
+        const countDisplay = document.getElementById("compareResultsCount");
+        const showAllBtn = document.getElementById("showAllBtn");
+        const filterChips = document.querySelectorAll(".filter-chip");
+        const langBtn = document.getElementById("langBtn");
+        const langBtnText = document.getElementById("langBtnText");
+        const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        const validCategories = Array.from(filterChips).map(function (c) {
+            return c.getAttribute("data-filter");
+        });
+
+        /* ---------------------------------------------------------
+           STATE (from URL)
+        --------------------------------------------------------- */
+        let activeCategory = "all";
+        let activeDisease = null;   // set when arriving from a disease's "Compare" button
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialCategory = (urlParams.get("category") || "").toLowerCase();
+        const initialDisease = normalizeKey(urlParams.get("disease"));
+
+        if (initialDisease) {
+            const match = Object.values(pairDiseaseIds).find(function (v) {
+                return normalizeKey(v) === initialDisease;
+            });
+            if (match) {
+                activeDisease = match;
+                try { localStorage.setItem("rde-last-disease", match); } catch (e) {}
+            }
+        }
+        if (!activeDisease && validCategories.indexOf(initialCategory) !== -1) {
+            activeCategory = initialCategory;
+        }
+
+        /* ---------------------------------------------------------
+           NAV LINKS -> LAST VIEWED DISEASE
+        --------------------------------------------------------- */
+        function updateDiseaseNavLinks() {
+            let last = null;
+            try { last = localStorage.getItem("rde-last-disease"); } catch (e) {}
+            if (!last) return;
+
+            document.querySelectorAll('[data-nav="journey"]').forEach(function (a) {
+                a.href = "disease.html?disease=" + encodeURIComponent(last);
+            });
+            document.querySelectorAll('[data-nav="resources"]').forEach(function (a) {
+                a.href = "disease.html?disease=" + encodeURIComponent(last) + "#sources";
+            });
+        }
+
+        /* ---------------------------------------------------------
+           RENDER CARDS (one language only)
+        --------------------------------------------------------- */
+        function renderCards() {
+            if (!cardsContainer) return;
+            cardsContainer.innerHTML = "";
+
+            const isAr = currentLang === "ar";
+            const dict = uiDict[currentLang] || uiDict.en;
+
+            const filtered = comparisonPairs.filter(function (item) {
+                if (activeDisease) {
+                    return pairDiseaseIds[item.id] === activeDisease;
+                }
+
+                if (activeCategory !== "all" && item.category !== activeCategory) return false;
+                return true;
+            });
+
+            if (countDisplay) {
+                countDisplay.innerHTML = dict.showingComparisons + " <strong>" + filtered.length + "</strong> " + dict.comparisonsWord;
+            }
+            if (showAllBtn) {
+                showAllBtn.hidden = !activeDisease;
+                showAllBtn.textContent = dict.showAll;
+            }
+
+            if (filtered.length === 0) {
+                const emptyCard = document.createElement("div");
+                emptyCard.className = "compare-card";
+                emptyCard.style.padding = "48px 24px";
+                emptyCard.style.textAlign = "center";
+                emptyCard.innerHTML = `
+                    <div style="font-size:2.5rem; margin-bottom:12px;">🔍</div>
+                    <h3 style="font-size:1.15rem; color:var(--text-heading); margin-bottom:8px;">${dict.noResults}</h3>
+                `;
+                cardsContainer.appendChild(emptyCard);
+                return;
+            }
+
+            filtered.forEach(function (pair) {
+                const card = document.createElement("article");
+                card.className = "compare-card";
+                card.setAttribute("data-category", pair.category);
+
+                const catName = isAr ? pair.categoryNameAr : pair.categoryNameEn;
+                const rareName = isAr ? pair.rareNameAr : pair.rareNameEn;
+                const mimicName = isAr ? pair.mimicNameAr : pair.mimicNameEn;
+                const rareDesc = isAr ? pair.rareDescAr : pair.rareDescEn;
+                const mimicDesc = isAr ? pair.mimicDescAr : pair.mimicDescEn;
+                const whyConfused = isAr ? pair.whyConfusedAr : pair.whyConfusedEn;
+                const pairNumStr = String(pair.id).padStart(2, "0");
+                const journeyUrl = "disease.html?disease=" + encodeURIComponent(pairDiseaseIds[pair.id]);
+
+                const cluesHtml = pair.clues.map(function (clue) {
+                    return `
+                        <li class="compare-clues-item">
+                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                            <div><strong>${isAr ? clue.ar : clue.en}</strong></div>
+                        </li>
+                    `;
+                }).join("");
+
+                card.innerHTML = `
+                    <header class="compare-card__header">
+                        <div class="compare-card__title-wrap">
+                            <span class="compare-card__pair-num">${pairNumStr}</span>
+                            <h2 class="compare-card__pair-title">
+                                <span>${rareName}</span>
+                                <span class="vs-badge">${dict.vsWord}</span>
+                                <span>${mimicName}</span>
+                            </h2>
+                        </div>
+                        <span class="compare-card__cat-pill">${catName}</span>
+                    </header>
+
+                    <div class="compare-card__body">
+                        <div class="compare-dual-grid">
+                            <div class="compare-box compare-box--rare">
+                                <span class="compare-box__tag">
+                                    <i class="fa-solid fa-dna"></i>
+                                    <span>${dict.tagRare}</span>
+                                </span>
+                                <h3 class="compare-box__name">${rareName}</h3>
+                                <p class="compare-box__desc">${rareDesc}</p>
+                            </div>
+
+                            <div class="compare-box compare-box--mimic">
+                                <span class="compare-box__tag">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                    <span>${dict.tagMimic}</span>
+                                </span>
+                                <h3 class="compare-box__name">${mimicName}</h3>
+                                <p class="compare-box__desc">${mimicDesc}</p>
+                            </div>
+                        </div>
+
+                        <div class="compare-confused-box">
+                            <i class="fa-solid fa-circle-question compare-confused-box__icon" aria-hidden="true"></i>
+                            <div class="compare-confused-box__content">
+                                <h4 class="compare-confused-box__title"><span>${dict.whyConfusedTitle}</span></h4>
+                                <p class="compare-confused-box__text">${whyConfused}</p>
+                            </div>
+                        </div>
+
+                        <div class="compare-clues-box">
+                            <h4 class="compare-clues-box__title">
+                                <i class="fa-solid fa-key" aria-hidden="true"></i>
+                                <span>${dict.keyCluesTitle}</span>
+                            </h4>
+                            <ul class="compare-clues-list">${cluesHtml}</ul>
+                        </div>
+                    </div>
+
+                    <footer class="compare-card__footer">
+                        <span style="font-size:0.82rem; color:var(--text-muted);">
+                            <i class="fa-solid fa-book-medical"></i>
+                            <span>${rareName}</span>
+                        </span>
+                        <a href="${journeyUrl}" class="compare-card__action-btn">
+                            <span>${dict.exploreJourneyBtn}</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </footer>
+                `;
+
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        /* ---------------------------------------------------------
+           FILTER CHIPS
+        --------------------------------------------------------- */
+        function updateFilterButtons() {
+            filterChips.forEach(function (chip) {
+                const isActive = !activeDisease && chip.getAttribute("data-filter") === activeCategory;
+                chip.classList.toggle("is-active", isActive);
+                chip.setAttribute("aria-selected", isActive ? "true" : "false");
+            });
+        }
+
+        filterChips.forEach(function (chip) {
+            chip.addEventListener("click", function () {
+                activeDisease = null;
+                activeCategory = this.getAttribute("data-filter") || "all";
+                updateFilterButtons();
+                renderCards();
+            });
+        });
+
+        /* ---------------------------------------------------------
+           SHOW ALL (leave single-disease mode)
+        --------------------------------------------------------- */
+        if (showAllBtn) {
+            showAllBtn.addEventListener("click", function () {
+                activeDisease = null;
+                activeCategory = "all";
+                history.replaceState(null, "", window.location.pathname);
+                updateFilterButtons();
+                renderCards();
+            });
+        }
+
+        /* ---------------------------------------------------------
+           LANGUAGE SWITCHER
+        --------------------------------------------------------- */
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem("rde-language", lang);
+
+            const dict = uiDict[lang] || uiDict.en;
+            const isAr = lang === "ar";
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = isAr ? "rtl" : "ltr";
+            document.body.classList.toggle("rtl", isAr);
+            document.title = dict.pageTitle;
+
+            if (langBtnText) langBtnText.textContent = dict.langBtnText;
+
+            document.querySelectorAll("[data-i18n]").forEach(function (elem) {
+                const key = elem.getAttribute("data-i18n");
+                if (dict[key]) elem.textContent = dict[key];
+            });
+
+            document.querySelectorAll("[data-nav]").forEach(function (link) {
+                const navKey = link.getAttribute("data-nav");
+                const mapKey = "nav" + navKey.charAt(0).toUpperCase() + navKey.slice(1);
+                if (dict[mapKey]) link.textContent = dict[mapKey];
+            });
+
+            renderCards();
+        }
+
+        if (langBtn) {
+            langBtn.addEventListener("click", function () {
+                applyLanguage(currentLang === "en" ? "ar" : "en");
+            });
+        }
+
+        /* ---------------------------------------------------------
+           MOBILE DRAWER
+        --------------------------------------------------------- */
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener("click", function () {
+                const isOpen = mobileMenu.classList.toggle("is-open");
+                mobileMenuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+                mobileMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+                const icon = mobileMenuToggle.querySelector("i");
+                if (icon) {
+                    icon.classList.toggle("fa-bars", !isOpen);
+                    icon.classList.toggle("fa-xmark", isOpen);
+                }
+            });
+        }
+
+        /* ---------------------------------------------------------
+           INIT
+        --------------------------------------------------------- */
+        updateFilterButtons();
+        updateDiseaseNavLinks();
+        applyLanguage(currentLang);
+
+    })();
+    </script>
+    <!-- نافذة الشات بوت العائمة -->
+<!-- Medical chatbot (loaded directly, no iframe) -->
+<script src="chatbot.js?v=5" defer></script>
+</body>
+</html>
